@@ -1,0 +1,17 @@
+.env
+settings.local.yaml
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+work/
+inbox/*
+!inbox/.gitkeep
+done/
+decks/
+brand-inbox/*
+!brand-inbox/.gitkeep
+design/templates/*
+!design/templates/.gitkeep
+state.json
+logs/

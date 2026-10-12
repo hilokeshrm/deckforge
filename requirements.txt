@@ -1,0 +1,33 @@
+# Core
+python-pptx>=1.0.2
+pymupdf>=1.24
+pymupdf4llm>=0.0.17
+python-docx>=1.1
+pandas>=2.1
+openpyxl>=3.1
+tabulate>=0.9
+pydantic>=2.6
+pyyaml>=6.0
+python-dotenv>=1.0
+requests>=2.31
+Pillow>=10.2
+trafilatura>=1.12
+
+# LLM providers (Ollama is called over HTTP, no package needed)
+openai>=1.40
+anthropic>=0.70
+
+# Slide screenshots (visual QA, thumbnails) + PDF export of the HTML decks.
+# After install run:  playwright install chromium
+playwright>=1.44
+
+# Web UI
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+
+# Tests
+pytest>=8.0
+
+# Optional: audio/video transcription on the GPU (see README "Audio input")
+# faster-whisper>=1.0

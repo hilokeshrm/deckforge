@@ -1,0 +1,20 @@
+# Put this next to your logo/images in brand-inbox/<brand-name>/ .
+# Everything is optional; anything you leave out is detected from the logo,
+# a sample .pptx, or a guidelines PDF in the same folder.
+colors:
+  primary: "#0B5FFF"
+  accent: "#FF6B00"
+  accent2: "#00B8A9"
+  background: "#FFFFFF"
+  text: "#0F172A"
+fonts:
+  heading: Montserrat
+  body: Inter
+font_css:
+  - https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;600&display=swap
+tone: confident, plain English, no jargon
+footer: Acme Inc. · Confidential
+logo_position: top-right        # top-right | top-left | bottom-right | bottom-left
+title_background: primary       # primary | image | background
+transition: slide               # fade | slide | zoom
+animation: rise                 # rise | fade | zoom | slide

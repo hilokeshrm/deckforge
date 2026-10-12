@@ -1,0 +1,90 @@
+# Deck agent configuration
+
+llm:
+  # Which provider handles each task. Options: ollama | openai | anthropic
+  # Everything runs on the local GPU by default. To use an API for the
+  # quality-critical steps, set e.g.  plan: anthropic  and  edit: anthropic
+  # (the web UI Settings page edits this section too).
+  default_provider: ollama
+  routing:
+    summarize: ollama   # condensing long source documents
+    plan: ollama        # writing the deck outline + slide content
+    edit: ollama        # applying change requests / QA fixes
+    vision: ollama      # OCR of scanned pages
+    caption: ollama     # describing images so the planner can place them
+    brand: ollama       # reading brand/style-guide documents
+    review: ollama      # visual QA of rendered slides
+  # If the routed provider fails or is unavailable, try these in order.
+  # Providers without an API key (or Ollama not running) are skipped.
+  fallback_order: [ollama, anthropic, openai]
+  max_retries: 2        # re-asks per provider when the JSON is invalid
+
+  ollama:
+    url: http://localhost:11434
+    text_model: auto    # auto = picked from GPU VRAM (engine/gpu.py), or e.g. qwen3:14b
+    vision_model: auto  # auto, or e.g. gemma3:12b
+    num_ctx: 16384      # context window; raise if you have VRAM to spare
+    num_gpu: 999        # layers to offload to the GPU (999 = all)
+    keep_alive: 30m
+    temperature: 0.4
+    think: false        # Qwen3 "thinking": false is faster, true plans a bit better
+    max_image_side: 1280
+    timeout: 1200
+
+  openai:
+    model: gpt-5        # any current OpenAI chat model with vision
+    timeout: 600
+
+  anthropic:
+    model: claude-opus-5-5
+    effort: high        # low | medium | high | xhigh | max
+    refusal_fallback: true   # server-side fallback model if a request is declined
+    max_tokens: 32000
+
+paths:
+  inbox: inbox
+  done: done
+  work: work
+  decks: decks
+  brand_inbox: brand-inbox
+  templates: design/templates
+  state: state.json
+  logs: logs
+
+ingest:
+  max_source_chars: 24000   # longer sources are summarized first (task: summarize)
+  chunk_chars: 10000
+  caption_images: true
+  max_captions: 15
+  min_image_px: 120         # skip icons/bullets extracted from documents
+  max_extracted_images: 30
+  ocr_scanned_pdfs: true
+  ocr_max_pages: 30
+  whisper_model: large-v3   # used only if faster-whisper is installed
+
+render:
+  # Every deck is an animated, self-contained HTML file. Add pptx and/or pdf to
+  # also export those for every version (pdf needs Playwright).
+  formats: [html]
+  soffice: auto             # LibreOffice, only used for previews of .pptx exports
+
+qa:
+  render_previews: true     # slide screenshots via Playwright (headless Chromium)
+  vision_review: true       # a vision model looks at the rendered slides
+  auto_fix: true            # apply the reviewer's fixes once
+  max_bullets: 6
+  max_bullet_words: 18
+
+defaults:
+  template: default
+  slides: 10
+  audience: general business audience
+
+agent:
+  poll_seconds: 15
+  max_attempts: 2
+  settle_seconds: 3         # ignore inbox items modified in the last N seconds (still copying)
+
+ui:
+  host: 127.0.0.1           # use 0.0.0.0 to open it to your LAN
+  port: 8000
